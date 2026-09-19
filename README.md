@@ -3,6 +3,9 @@ Question2Answer
 
 [Question2Answer][Q2A] (Q2A) is a popular free open source Q&A platform for PHP/MySQL, used by over 20,898 [sites] in 40 languages.
 
+**This is a modified version of Question2Answer, not an official release.** See
+[Modifications](#modifications) for what was changed and when.
+
 **Note:** if you're using Q2A directly from git, make sure to use the master branch as that is the latest stable version. Or download an official release from the [Q2A website][Q2A].
 
 Q2A is highly customisable with many awesome features:
@@ -56,6 +59,25 @@ All development is now taking place through GitHub. The collaborative developmen
 Thanks and enjoy!
 
 Gideon & Scott
+
+
+----------
+
+
+Modifications
+-----------------------------
+
+This fork is a modified version of Question2Answer and is not an official Q2A
+release. Modifications relative to upstream Q2A 1.8.8:
+
+- **2026-09-19** - updated the bundled PHPMailer (6.6.3 to 6.12.0) and htmLawed
+  (1.2.5 to 1.2.15.1), and adjusted `qa_sanitize_html_hook_tag()` for htmLawed's
+  changed closing-tag convention; removed the end-of-life PHPMailer 5.2.28 along
+  with the deprecated `qa-class.phpmailer.php` and `qa-class.smtp.php` shims;
+  modernised the code for PHP 8 and raised the enforced minimum to PHP 7.1;
+  aligned the source licence notices with the GPL v3 `LICENSE` file.
+
+Official, unmodified releases are available from the [Q2A website][Q2A].
 
 
 ----------
