@@ -6,10 +6,10 @@
 	Description: User management (application level) for creating/modifying users
 
 
-	This program is free software; you can redistribute it and/or
-	modify it under the terms of the GNU General Public License
-	as published by the Free Software Foundation; either version 2
-	of the License, or (at your option) any later version.
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
 
 	This program is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -239,7 +239,7 @@ function qa_create_new_user($email, $password, $handle, $level = QA_USER_LEVEL_B
  * @param array|null $userAccount If present, some queries will be more efficient
  * @return mixed
  */
-function qa_delete_user($userid, array $userAccount = null)
+function qa_delete_user($userid, ?array $userAccount = null)
 {
 	if (qa_to_override(__FUNCTION__)) { $args=func_get_args(); return qa_call_override(__FUNCTION__, $args); }
 

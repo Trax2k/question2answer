@@ -7,10 +7,10 @@
 	Description: File-based driver for caching system.
 
 
-	This program is free software; you can redistribute it and/or
-	modify it under the terms of the GNU General Public License
-	as published by the Free Software Foundation; either version 2
-	of the License, or (at your option) any later version.
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
 
 	This program is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -238,10 +238,11 @@ class Q2A_Storage_FileCacheDriver implements Q2A_Storage_CacheDriver
 
 		$totalFiles = 0;
 		$totalBytes = 0;
-		$dirIter = new RecursiveDirectoryIterator($this->cacheDir);
+		$dirIter = new RecursiveDirectoryIterator($this->cacheDir, FilesystemIterator::SKIP_DOTS);
 		foreach (new RecursiveIteratorIterator($dirIter) as $file) {
+			// SKIP_DOTS drops '.' and '..'; this also skips the .htaccess guard file and any
+			// other dotfile so they are not counted towards the reported cache size.
 			if (strpos($file->getFilename(), '.') === 0) {
-				// TODO: use FilesystemIterator::SKIP_DOTS once we're on minimum PHP 5.3
 				continue;
 			}
 
