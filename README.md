@@ -58,6 +58,23 @@ Thanks and enjoy!
 Gideon & Scott
 
 
+----------
+
+
+License
+-----------------------------
+
+Question2Answer is free software released under the [GNU General Public License v3][license]
+(or, at your option, any later version). The full licence text is in the `LICENSE` file.
+
+Some bundled third-party components keep their own licences, which are unchanged:
+
+- `qa-include/vendor/PHPMailer6` and `qa-include/vendor/PHPMailer` - LGPL v2.1 (declared as `LGPL-2.1-only` upstream).
+- `qa-include/vendor/htmLawed.php` - dual licensed under LGPL v3 and GPL v2+.
+- `qa-plugin/wysiwyg-editor/ckeditor` - see `qa-plugin/wysiwyg-editor/ckeditor/LICENSE.md`.
+- `qa-plugin/recaptcha-captcha/recaptchalib.php` - MIT licence (see the header in that file).
+
+
 [Q2A]: http://www.question2answer.org/
 [1]: http://www.question2answer.org/qa/user/Scott
 [2]: https://docs.question2answer.org/
@@ -65,3 +82,4 @@ Gideon & Scott
 [4]: https://github.com/q2a/question2answer/blob/master/CONTRIBUTING.md
 [releases]: https://github.com/q2a/question2answer/releases
 [sites]: http://www.question2answer.org/sites.php
+[license]: https://www.gnu.org/licenses/gpl-3.0.html
