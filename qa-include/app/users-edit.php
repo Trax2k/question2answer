@@ -239,7 +239,7 @@ function qa_create_new_user($email, $password, $handle, $level = QA_USER_LEVEL_B
  * @param array|null $userAccount If present, some queries will be more efficient
  * @return mixed
  */
-function qa_delete_user($userid, array $userAccount = null)
+function qa_delete_user($userid, ?array $userAccount = null)
 {
 	if (qa_to_override(__FUNCTION__)) { $args=func_get_args(); return qa_call_override(__FUNCTION__, $args); }
 

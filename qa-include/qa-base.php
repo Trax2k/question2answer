@@ -131,34 +131,14 @@ function qa_php_version_below($version)
  */
 function qa_initialize_php()
 {
-	if (qa_php_version_below('5.1.6'))
-		qa_fatal_error('Q2A requires PHP 5.1.6 or later');
+	if (qa_php_version_below('7.1.0'))
+		qa_fatal_error('Q2A requires PHP 7.1 or later');
 
 	error_reporting(E_ALL); // be ultra-strict about error checking
 
-	@ini_set('magic_quotes_runtime', 0);
-
 	@setlocale(LC_CTYPE, 'C'); // prevent strtolower() et al affecting non-ASCII characters (appears important for IIS)
 
-	if (function_exists('date_default_timezone_set') && function_exists('date_default_timezone_get'))
-		@date_default_timezone_set(@date_default_timezone_get()); // prevent PHP notices where default timezone not set
-
-	if (ini_get('register_globals')) {
-		$checkarrays = array('_ENV', '_GET', '_POST', '_COOKIE', '_SERVER', '_FILES', '_REQUEST', '_SESSION'); // unregister globals if they're registered
-		$keyprotect = array_flip(array_merge($checkarrays, array('GLOBALS')));
-
-		foreach ($checkarrays as $checkarray) {
-			if (isset(${$checkarray}) && is_array(${$checkarray})) {
-				foreach (${$checkarray} as $checkkey => $checkvalue) {
-					if (isset($keyprotect[$checkkey])) {
-						qa_fatal_error('My superglobals are not for overriding');
-					} else {
-						unset($GLOBALS[$checkkey]);
-					}
-				}
-			}
-		}
-	}
+	@date_default_timezone_set(@date_default_timezone_get()); // prevent PHP notices where default timezone not set
 }
 
 
@@ -203,29 +183,10 @@ function qa_initialize_constants_1()
 		}
 	}
 
-	// Polyfills
-
-	// password_hash compatibility for 5.3-5.4
-	define('QA_PASSWORD_HASH', !qa_php_version_below('5.3.7'));
-	if (QA_PASSWORD_HASH) {
-		require_once QA_INCLUDE_DIR . 'vendor/password_compat.php';
-	}
-
-	// https://php.net/manual/en/function.hash-equals.php#115635
-	if (!function_exists('hash_equals')) {
-		function hash_equals($str1, $str2)
-		{
-			if (strlen((string)$str1) != strlen((string)$str2)) {
-				return false;
-			} else {
-				$res = $str1 ^ $str2;
-				$ret = 0;
-				for ($i = strlen($res) - 1; $i >= 0; $i--)
-					$ret |= ord($res[$i]);
-				return !$ret;
-			}
-		}
-	}
+	// Retained for backwards compatibility with themes and plugins that test it. password_hash()
+	// has been part of PHP core since 5.5 and hash_equals() since 5.6, so both are always
+	// available on any PHP version Q2A still supports and no polyfills are needed.
+	define('QA_PASSWORD_HASH', true);
 }
 
 
@@ -1046,7 +1007,10 @@ function qa_sanitize_html_hook_tag($element, $attributes = null)
 {
 	global $qa_sanitize_html_newwindow;
 
-	if (!isset($attributes)) // it's a closing tag
+	// htmLawed signals a closing tag by passing a non-array in place of the attributes:
+	// 1.2.5 and earlier omitted the argument entirely (so it defaulted to null), while
+	// 1.2.6+ passes the integer 0. Checking the type covers both conventions.
+	if (!is_array($attributes)) // it's a closing tag
 		return '</' . $element . '>';
 
 	if ($element == 'param' && trim(strtolower($attributes['name'] ?? '')) == 'allowscriptaccess')
@@ -1171,11 +1135,8 @@ function qa_gpc_to_string($string)
 {
 	if (qa_to_override(__FUNCTION__)) { $args=func_get_args(); return qa_call_override(__FUNCTION__, $args); }
 
-	// get_magic_quotes_gpc always returns false from PHP 5.4; this avoids deprecation notice on PHP 7.4+
-	if (qa_php_version_below('5.4.0'))
-		return get_magic_quotes_gpc() ? stripslashes($string) : $string;
-	else
-		return $string;
+	// Magic quotes were removed in PHP 5.4, so there are never any slashes to strip.
+	return $string;
 }
 
 
@@ -1188,11 +1149,8 @@ function qa_string_to_gpc($string)
 {
 	if (qa_to_override(__FUNCTION__)) { $args=func_get_args(); return qa_call_override(__FUNCTION__, $args); }
 
-	// get_magic_quotes_gpc always returns false from PHP 5.4; this avoids deprecation notice on PHP 7.4+
-	if (qa_php_version_below('5.4.0'))
-		return get_magic_quotes_gpc() ? addslashes($string) : $string;
-	else
-		return $string;
+	// Magic quotes were removed in PHP 5.4, so no slashes need to be added.
+	return $string;
 }
 
 

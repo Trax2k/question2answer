@@ -238,10 +238,11 @@ class Q2A_Storage_FileCacheDriver implements Q2A_Storage_CacheDriver
 
 		$totalFiles = 0;
 		$totalBytes = 0;
-		$dirIter = new RecursiveDirectoryIterator($this->cacheDir);
+		$dirIter = new RecursiveDirectoryIterator($this->cacheDir, FilesystemIterator::SKIP_DOTS);
 		foreach (new RecursiveIteratorIterator($dirIter) as $file) {
+			// SKIP_DOTS drops '.' and '..'; this also skips the .htaccess guard file and any
+			// other dotfile so they are not counted towards the reported cache size.
 			if (strpos($file->getFilename(), '.') === 0) {
-				// TODO: use FilesystemIterator::SKIP_DOTS once we're on minimum PHP 5.3
 				continue;
 			}
 
