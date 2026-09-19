@@ -69,7 +69,7 @@ Question2Answer is free software released under the [GNU General Public License 
 
 Some bundled third-party components keep their own licences, which are unchanged:
 
-- `qa-include/vendor/PHPMailer6` - LGPL v2.1 (declared as `LGPL-2.1-only` upstream).
+- `qa-include/vendor/PHPMailer6` - LGPL v2.1.
 - `qa-include/vendor/htmLawed.php` - dual licensed under LGPL v3 and GPL v2+.
 - `qa-plugin/wysiwyg-editor/ckeditor` - see `qa-plugin/wysiwyg-editor/ckeditor/LICENSE.md`.
 - `qa-plugin/recaptcha-captcha/recaptchalib.php` - MIT licence (see the header in that file).
